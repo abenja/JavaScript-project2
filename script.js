@@ -23,7 +23,7 @@ document.getElementById("artistList").addEventListener('change', loadFromList);
 function loadFromList() {
     // Artist variable gets its value from the dropdown menu
     artist = document.getElementById("artistList").value;
-    url = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
+    url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", url, true)
     xmlhttp.send();
@@ -41,7 +41,7 @@ function loadFromList() {
 function loadFromSearch() {
     // Artist variable gets its value from the dropdown menu
     artist = document.getElementById("inputField").value;
-    url = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
+    url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", url, true)
     xmlhttp.send();
