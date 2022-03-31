@@ -1,1 +1,1 @@
-# JavaScript-project2
+A simple application that retrieves artist information using last.fm API.
