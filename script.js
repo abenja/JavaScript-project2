@@ -27,7 +27,7 @@ document.getElementById("artistList").addEventListener('change', loadFromList);
 function loadFromList() {
     // Artist variable gets its value from the dropdown menu
     artist = document.getElementById("artistList").value;
-    url = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
+    url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", url, true)
     xmlhttp.send();
@@ -45,6 +45,7 @@ function loadFromList() {
 function loadFromSearch() {
     // Artist variable gets its value from the dropdown menu
     artist = document.getElementById("inputField").value;
+<<<<<<< HEAD
     // Checks whether the input field is empty
     if (artist == "") {
         document.getElementById('inputField').style.backgroundColor = "#f06e66";
@@ -70,6 +71,17 @@ function loadFromSearch() {
 
                 }
             }
+=======
+    url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", url, true)
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("content").innerHTML = xmlhttp.responseText;
+            jsonObj = JSON.parse(xmlhttp.responseText);
+            printData(jsonObj);
+>>>>>>> a69fe92273ac97c5e058d9fd9ac08f2ee1118b34
         }
     }
 
@@ -94,5 +106,10 @@ function printData() {
     out += "</table>";
     document.getElementById('content').innerHTML = out;
     console.log(data);
+<<<<<<< HEAD
 
 }
+=======
+    return false;
+}
+>>>>>>> a69fe92273ac97c5e058d9fd9ac08f2ee1118b34
