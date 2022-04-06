@@ -70,40 +70,41 @@ function loadFromSearch() {
 
                 }
             }
-    url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", url, true)
-    xmlhttp.send();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            document.getElementById("content").innerHTML = xmlhttp.responseText;
-            jsonObj = JSON.parse(xmlhttp.responseText);
-            printData(jsonObj);
+            url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", url, true)
+            xmlhttp.send();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("content").innerHTML = xmlhttp.responseText;
+                    jsonObj = JSON.parse(xmlhttp.responseText);
+                    printData(jsonObj);
+                }
+            }
+
         }
+
+        // Prints the retrieved data into a table
+        function printData() {
+            var data = jsonObj;
+            // Link to the image page of the artist
+            var picUrl = data.artist.url + "/+images";
+
+            var out = "<table>";
+            out += '<tr>';
+            out += '<td>' + 'Artist: ' + data.artist.name + '</td>';
+            out += '<td id="bio">' + 'Bio: ' + data.artist.bio.summary + '</td>';
+            out += '<td><img src="' + data.artist.image[2]['#text'] + '"></td>';
+            out += '<td> <a id="pictureLink" href=' + picUrl + ' target="_blank" rel="noopener noreferrer" >Click here for artist pictures</a>';
+            out += '</tr>';
+            out += '<tr>';
+            out += '<td>' + 'Artist: ' + data.artist.name + '</td>';
+            out += '</tr>';
+            out += "</table>";
+            document.getElementById('content').innerHTML = out;
+            console.log(data);
+
+        }
+        return false;
     }
-
-}
-
-// Prints the retrieved data into a table
-function printData() {
-    var data = jsonObj;
-    // Link to the image page of the artist
-    var picUrl = data.artist.url + "/+images";
-
-    var out = "<table>";
-    out += '<tr>';
-    out += '<td>' + 'Artist: ' + data.artist.name + '</td>';
-    out += '<td id="bio">' + 'Bio: ' + data.artist.bio.summary + '</td>';
-    out += '<td><img src="' + data.artist.image[2]['#text'] + '"></td>';
-    out += '<td> <a id="pictureLink" href=' + picUrl + ' target="_blank" rel="noopener noreferrer" >Click here for artist pictures</a>';
-    out += '</tr>';
-    out += '<tr>';
-    out += '<td>' + 'Artist: ' + data.artist.name + '</td>';
-    out += '</tr>';
-    out += "</table>";
-    document.getElementById('content').innerHTML = out;
-    console.log(data);
-
-}
-    return false;
 }
