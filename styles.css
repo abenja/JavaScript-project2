@@ -1,3 +1,15 @@
+.searchDiv {
+/* From https://css.glass */
+background: rgba(221, 158, 217, 0.1);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(9.8px);
+border: 1px solid rgba(221, 158, 217, 0.3);
+max-width: 500px;
+margin: auto;
+padding-bottom: 10px;
+}
+
 h1 {
     color:brown;
 }
@@ -5,5 +17,68 @@ h1 {
 body {
     text-align: center;
     margin-top: 400px;
-    background-color: rgb(165, 165, 164);
+    background: linear-gradient(to right, #b0d8ff, #ffa7a7);
+}
+
+
+#inputField {
+    padding:7px 20px;
+	font-size:15px;
+    border-radius:6px;
+    border-style: initial;
+	display:inline-block;
+    margin-right: 5px;
+}
+
+#searchButton {
+	box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:7px 34px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #528ecc;
+}
+#searchButton:hover {
+	background:linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+	background-color:#378de5;
+}
+#searchButton:active {
+	position:relative;
+	top:1px;
+}
+
+#artistList {
+    padding:7px 20px;
+    margin-top: 5px;
+	font-size:15px;
+    border-radius:6px;
+    border-style: initial;
+	display:inline-block;
+}
+        
+
+table {
+    border-style: solid;
+    max-width: 1000px;
+    margin: auto;
+
+
+}
+
+td {
+    border-style: groove;
+}
+
+#bio {
+    border-style: groove;
+    padding-left: 20px;
+    padding-right: 20px;
 }

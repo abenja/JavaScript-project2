@@ -4,10 +4,14 @@ var artist;
 var url;
 
 // Adds an eventListener to the search box and adds makes the search button clicked
-document.getElementById("inputField").addEventListener("keydown", function(event) {
+document.getElementById("inputField").addEventListener("keydown", function (event) {
     if (event.key === 'Enter') {
-        event.preventDefault();
-        document.getElementById("searchButton").click();
+        if (document.getElementById("inputField").value == "") {
+            document.getElementById('inputField').style.backgroundColor = "#f06e66";
+            alert("You need to write something!");
+        } else {
+            document.getElementById("searchButton").click();
+        }
     }
 }, false);
 
@@ -27,47 +31,68 @@ function loadFromList() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", url, true)
     xmlhttp.send();
-    xmlhttp.onreadystatechange = function() {
+    xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             document.getElementById("content").innerHTML = xmlhttp.responseText;
             jsonObj = JSON.parse(xmlhttp.responseText);
             printData(jsonObj);
         }
     }
-    return false
+
 }
 
 // Function that retrieves data from last.fm
 function loadFromSearch() {
     // Artist variable gets its value from the dropdown menu
     artist = document.getElementById("inputField").value;
-    url = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", url, true)
-    xmlhttp.send();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            document.getElementById("content").innerHTML = xmlhttp.responseText;
-            jsonObj = JSON.parse(xmlhttp.responseText);
-            printData(jsonObj);
+    // Checks whether the input field is empty
+    if (artist == "") {
+        document.getElementById('inputField').style.backgroundColor = "#f06e66";
+        alert("You need to write something!");
+    } else {
+        url = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", url, true)
+        xmlhttp.send();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                // Checks whether the responseText is the error message given when a query is not found and alerts the user accordingly
+                if (xmlhttp.responseText == '{"error":6,"message":"The artist you supplied could not be found","links":[]}') {
+                    alert("The artist you searched for is not found!");
+                    document.getElementById('inputField').style.backgroundColor = "#f06e66";
+
+
+                } else {
+                    document.getElementById("content").innerHTML = xmlhttp.responseText;
+                    jsonObj = JSON.parse(xmlhttp.responseText);
+                    printData(jsonObj);
+                    document.getElementById('inputField').style.backgroundColor = "#ffffff";
+
+                }
+            }
         }
     }
-    return false;
+
 }
 
 // Prints the retrieved data into a table
 function printData() {
     var data = jsonObj;
+    // Link to the image page of the artist
+    var picUrl = data.artist.url + "/+images";
+
     var out = "<table>";
-        out += '<tr>';
-        out += '<td>' + 'Artist: ' + data.artist.name + '</td>';
-        out += '<td>' + 'Bio: ' + data.artist.bio.summary + '</td>';
-        out += '<td><img src="'+ data.artist.image[4]['#text'] + '"></td>';
-        out += '</tr>';
-        out += '<tr>';
-        out += '</tr>';
+    out += '<tr>';
+    out += '<td>' + 'Artist: ' + data.artist.name + '</td>';
+    out += '<td id="bio">' + 'Bio: ' + data.artist.bio.summary + '</td>';
+    out += '<td><img src="' + data.artist.image[2]['#text'] + '"></td>';
+    out += '<td> <a id="pictureLink" href=' + picUrl + ' target="_blank" rel="noopener noreferrer" >Click here for artist pictures</a>';
+    out += '</tr>';
+    out += '<tr>';
+    out += '<td>' + 'Artist: ' + data.artist.name + '</td>';
+    out += '</tr>';
     out += "</table>";
     document.getElementById('content').innerHTML = out;
     console.log(data);
-    return false;
+
 }
