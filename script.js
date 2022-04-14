@@ -39,6 +39,11 @@ function loadFromList() {
             jsonObj = JSON.parse(xmlhttp.responseText);
             printArtistData(jsonObj);
             loadAlbums();
+            //empties the search bar and clears the styling from the possible error message
+            document.getElementById('inputField').style.backgroundColor = "#ffffff";
+            document.getElementById('inputField').value = "";
+            document.getElementById('notFoundMessage').innerHTML = "";
+            document.getElementById('notFoundMessage').style.padding = 'initial';
         }
     }
 
@@ -93,7 +98,7 @@ function printArtistData() {
     var out = "<table id='infoTable'>";
     out += '<tr>';
     out += '<td id="bio">' + 'Bio: ' + data.artist.bio.summary + '</td>';
-    out += '<td> <a id="pictureLink" href=' + picUrl + ' target="_blank" rel="noopener noreferrer" >Click here for artist pictures</a>';
+    out += '<td id="pictureLink"> <a href=' + picUrl + ' target="_blank" rel="noopener noreferrer" >Click here for artist pictures</a>';
     out += '</tr>';
     out += "</table>";
     document.getElementById('infoTableHead').innerHTML = infoTableHeader;
@@ -124,11 +129,10 @@ function printAlbumData() {
 
     // a for-loop that goes through the album-array and adds the element with each iteration
     for (var i = 0; i < albumData.topalbums.album.length; i++) {
-    var albumPic = albumData.topalbums.album[i].image[3]['#text'];
-
-    albumOut += '<tr><td id="albumName">' + albumData.topalbums.album[i].name + '</td>';
-    albumOut += '<td>' + '<img src="' + albumPic + '"' + '</td></tr>';
-
+        var albumPic = albumData.topalbums.album[i].image[3]['#text'];
+        albumOut += '<tr><td id="albumName">' + albumData.topalbums.album[i].name + '<br>' + '<a id="albumLink" href="' +
+            albumData.topalbums.album[i].url + '" target="_blank" rel="noopener noreferrer" >Click here for album songs' + '</td>';
+        albumOut += '<td>' + '<img src="' + albumPic + '"' + '</td></tr>';
 
     }
     albumOut += '</tr>';

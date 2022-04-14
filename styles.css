@@ -10,17 +10,17 @@ margin: auto;
 padding-bottom: 10px;
 }
 
-
 h1 {
     color:brown;
+	font-size: 40px;
 }
 
 body {
     text-align: center;
     margin-top: 400px;
     background: linear-gradient(to right, #b0d8ff, #ffa7a7);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-
 
 #inputField {
     padding:7px 20px;
@@ -63,7 +63,6 @@ body {
 	margin: auto;
 }
 
-
 #artistList {
     padding:7px 20px;
     margin-top: 5px;
@@ -71,15 +70,6 @@ body {
     border-radius:6px;
     border-style: initial;
 	display:inline-block;
-}
-
-
-#infoTable {
-    border-style: solid;
-	border-radius: 4px;
-    width: 100%;
-	max-width: 1000px;
-    margin: auto;
 }
 
 #infoTableHeader {
@@ -94,15 +84,20 @@ body {
     margin: auto;
 	margin-bottom: -20px;
 	padding: 5px;
+	font-size: 30px;
 }
 
-#albumTable {
-	border-style: solid;
+#infoTable {
+    border-style: solid;
 	border-radius: 4px;
-    width: fit-content;
+    width: 100%;
 	max-width: 1000px;
     margin: auto;
-	text-align: left;
+	font-size: 18px;
+}
+
+#pictureLink {
+	background-color: #e5e5e5;
 }
 
 #albumTableHeader {
@@ -113,6 +108,18 @@ body {
 	margin: auto;
 	margin-bottom: -20px;
 	padding: 5px;
+	font-size: 25px;
+}
+
+
+#albumTable {
+	border-style: solid;
+	border-radius: 4px;
+    width: fit-content;
+	max-width: 1000px;
+    margin: auto;
+	text-align: left;
+	font-size: 20px;
 }
 
 
@@ -128,6 +135,6 @@ td {
 
 #bio {
     border-style: groove;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 10px 20px 10px 20px;
 }
+
