@@ -1,26 +1,8 @@
 // Defining global variables
 var jsonObj;
+var jsonAlbumObj;
 var artist;
 var url;
-var albums;
-let albumData;
-
-
-//loads album data with artist.getTopAlbums -method
-function loadAlbums() {
-    url = "https://ws.audioscrobbler.com/2.0/?method=artist.getTopAlbums&artist=" + artist + "&limit=10&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            albums = JSON.parse(xmlhttp.responseText);
-            console.log(albums);
-            albumData = albums.topalbums.album[0].name;
-            console.log(albumData);
-        }
-    }
-}
 
 
 // Adds an eventListener to the search box and adds makes the search button clicked
@@ -53,9 +35,9 @@ function loadFromList() {
     xmlhttp.send();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            document.getElementById("content").innerHTML = xmlhttp.responseText;
+            document.getElementById("artistContent").innerHTML = xmlhttp.responseText;
             jsonObj = JSON.parse(xmlhttp.responseText);
-            printData(jsonObj);
+            printArtistData(jsonObj);
             loadAlbums();
         }
     }
@@ -71,7 +53,7 @@ function loadFromSearch() {
         document.getElementById('inputField').style.backgroundColor = "#f06e66";
         alert("You need to write something!");
     } else {
-        url = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
+        url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" + artist + "&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("GET", url, true);
         xmlhttp.send();
@@ -79,43 +61,81 @@ function loadFromSearch() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 // Checks whether the responseText is the error message given when a query is not found and alerts the user accordingly
                 if (xmlhttp.responseText == '{"error":6,"message":"The artist you supplied could not be found","links":[]}') {
-                    alert("The artist you searched for is not found!");
+                    document.getElementById('notFoundMessage').innerHTML = "The artist you searched for is not found!";
                     document.getElementById('inputField').style.backgroundColor = "#f06e66";
-
-
+                    document.getElementById('notFoundMessage').style.padding = "5px";
+                    document.getElementById('notFoundMessage').style.marginTop = "5px";
                 } else {
-                    document.getElementById("content").innerHTML = xmlhttp.responseText;
+                    document.getElementById("artistContent").innerHTML = xmlhttp.responseText;
                     jsonObj = JSON.parse(xmlhttp.responseText);
-                    printData(jsonObj);
+                    printArtistData(jsonObj);
                     loadAlbums();
                     document.getElementById('inputField').style.backgroundColor = "#ffffff";
+                    //empties the search bar
+                    document.getElementById('inputField').value = "";
+                    document.getElementById('notFoundMessage').innerHTML = "";
+                    document.getElementById('notFoundMessage').style.padding = 'initial';
 
                 }
             }
-
         }
     }
 }
 
 
 
-
 // Prints the retrieved data into a table
-function printData() {
+function printArtistData() {
     var data = jsonObj;
     // Link to the image page of the artist
     var picUrl = data.artist.url + "/+images";
-
+    var infoTableHeader = '<table id="infoTableHeader"><thead><tr><th>' + 'Artist: ' + data.artist.name + '</th></tr></thead></table>';
     var out = "<table id='infoTable'>";
     out += '<tr>';
-    out += '<td>' + 'Artist: ' + data.artist.name + '</td>';
     out += '<td id="bio">' + 'Bio: ' + data.artist.bio.summary + '</td>';
-    out += '<td><img src="' + data.artist.image[2]['#text'] + '"></td>';
     out += '<td> <a id="pictureLink" href=' + picUrl + ' target="_blank" rel="noopener noreferrer" >Click here for artist pictures</a>';
     out += '</tr>';
-    out += '</tr>';
     out += "</table>";
-    document.getElementById('content').innerHTML = out;
+    document.getElementById('infoTableHead').innerHTML = infoTableHeader;
+    document.getElementById('artistContent').innerHTML = out;
     console.log(data);
     return false;
 }
+
+//loads album data with artist.getTopAlbums -method
+function loadAlbums() {
+    url = "https://ws.audioscrobbler.com/2.0/?method=artist.getTopAlbums&artist=" + artist + "&limit=10&api_key=32d0ed841fc10576e713bdf8c08166aa&format=json";
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            jsonAlbumObj = JSON.parse(xmlhttp.responseText);
+            printAlbumData(jsonAlbumObj);
+        }
+    }
+}
+
+
+function printAlbumData() {
+    var albumData = jsonAlbumObj;
+    var albumTableHeader = '<table id="albumTableHeader"><thead><tr><th>' + 'Top albums: ' + '</th></tr></thead></table>';
+    var albumOut = "<table id='albumTable'>";
+
+    // a for-loop that goes through the album-array and adds the element with each iteration
+    for (var i = 0; i < albumData.topalbums.album.length; i++) {
+    var albumPic = albumData.topalbums.album[i].image[3]['#text'];
+
+    albumOut += '<tr><td id="albumName">' + albumData.topalbums.album[i].name + '</td>';
+    albumOut += '<td>' + '<img src="' + albumPic + '"' + '</td></tr>';
+
+
+    }
+    albumOut += '</tr>';
+    albumOut += "</table>";
+    document.getElementById('albumTableHead').innerHTML = albumTableHeader;
+    document.getElementById('albumContent').innerHTML = albumOut;
+    console.log(albumData);
+
+}
+
